@@ -18,9 +18,14 @@ from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path, include
 from django.views.generic import TemplateView
+from . import views
+app_name = 'todo_list'
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html'), name='index'),
-    path('admin/', admin.site.urls),
-    path('todos/', include('todo_list.urls')),
+    #path('',views.index_view, name='index'),
+    #path('', views.ToDoListIndexView.as_view(), name='index'),
+    path('', views.ToDoListIndexView.as_view(), name='index'),
+    path('list/', views.ToDoListView.as_view(), name='list'),
+    path('done/', views.ToDoListDoneView.as_view(), name='done'),
+    path('<int:pk>', views.ToDoDetailView.as_view(), name='detail'),
 ]
