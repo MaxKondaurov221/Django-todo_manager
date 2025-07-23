@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView, DetailView
-
+from django.views.generic import  ListView, DetailView, CreateView
+from .forms import ToDoItemForm
 from .models import ToDoItem
 
 # Create your views here.
@@ -27,3 +27,8 @@ class ToDoListDoneView(ListView):
 
 class ToDoDetailView(DetailView):
     model = ToDoItem
+
+class ToDoItemCreateView(CreateView):
+    model = ToDoItem
+    form_class = ToDoItemForm
+
