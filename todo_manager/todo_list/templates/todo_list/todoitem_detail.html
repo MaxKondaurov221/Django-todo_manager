@@ -13,6 +13,11 @@
   </div>
 
 <div>
+  <a href="{% url 'todo_list:create' %}" >
+    Create another ToDo item
+  </a>
+</div>
+<div>
   <a href="{% url 'todo_list:update' object.pk %}" >
     Update ToDo item
   </a>
