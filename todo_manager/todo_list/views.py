@@ -1,7 +1,9 @@
-from django.http import HttpRequest, HttpResponse
+from django.contrib.messages import success
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import  ListView, DetailView, CreateView
-from .forms import ToDoItemForm
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .forms import ToDoCreateItemForm, ToDoItemUpdateForm
 from .models import ToDoItem
 
 # Create your views here.
@@ -20,15 +22,30 @@ class ToDoListIndexView(ListView):
     queryset = ToDoItem.objects.all()[:3]
 
 class ToDoListView(ListView):
-    model = ToDoItem
+    queryset = ToDoItem.objects.filter(archived=False)
+
 
 class ToDoListDoneView(ListView):
     queryset = ToDoItem.objects.filter(done=True).all()
 
 class ToDoDetailView(DetailView):
-    model = ToDoItem
+    queryset = ToDoItem.objects.filter(archived=False)
 
 class ToDoItemCreateView(CreateView):
     model = ToDoItem
-    form_class = ToDoItemForm
+    form_class = ToDoCreateItemForm
 
+class ToDoItemUpdateView(UpdateView):
+    model = ToDoItem
+    form_class = ToDoItemUpdateForm
+    template_name_suffix = '_update_form'
+
+class ToDoItemDeleteView(DeleteView):
+    model = ToDoItem
+    success_url = reverse_lazy('todo_list:list')
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.archived = True
+        self.object.save()
+        return HttpResponseRedirect(success_url)

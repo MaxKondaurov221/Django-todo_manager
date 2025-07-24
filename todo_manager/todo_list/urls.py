@@ -14,10 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.shortcuts import render
-from django.urls import path, include
-from django.views.generic import TemplateView
+from django.urls import path
 from . import views
 app_name = 'todo_list'
 
@@ -28,5 +25,7 @@ urlpatterns = [
     path('list/', views.ToDoListView.as_view(), name='list'),
     path('done/', views.ToDoListDoneView.as_view(), name='done'),
     path('<int:pk>', views.ToDoDetailView.as_view(), name='detail'),
+    path('<int:pk>/update', views.ToDoItemUpdateView.as_view(), name='update'),
+    path('<int:pk>/delete', views.ToDoItemDeleteView.as_view(), name='delete'),
     path('create/', views.ToDoItemCreateView.as_view(), name='create'),
 ]
